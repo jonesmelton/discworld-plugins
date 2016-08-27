@@ -1,0 +1,1601 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE muclient>
+
+<!-- Spell Mindspace calculator for wizzards by Quow (Azzer) -->
+
+<muclient>
+<plugin
+   name="QuowMindspaceCalc"
+   author="Quow"
+   id="bff25338e014986ba3b56e2c"
+   language="Lua"
+   purpose="Mindspace calc, spellchecks and more"
+   date_written="2016-08-25"
+   save_state="y"
+   requires="4.94"
+   version="1.02"
+   >
+</plugin>
+
+<!--  Triggers  -->
+<triggers>
+  <trigger
+   enabled="y"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^You know the following(.+?)magic spell(s)?:$"
+   regexp="y"
+   sequence="40"
+   script="QuowSpellStart"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="y"
+   keep_evaluating="y"
+   match="$"
+   regexp="y"
+   script="QuowSpellCheck"
+   sequence="35"
+   name="QuowLineCheck"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| special......... {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowMindspaceParse"
+   sequence="35"
+   name="QuowMindspaceCheck"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (air...........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="air"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (earth.........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="earth"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (fire..........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="fire"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (water.........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="water"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (animating.....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="animating"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (channeling....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="channeling"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (charming......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="charming"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (convoking.....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="convoking"
+  >
+  </trigger>
+
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (cursing.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="cursing"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (binding.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="binding"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (brewing.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="brewing"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (chanting......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="chanting"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (dancing.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="dancing"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (enchanting....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="enchanting"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (evoking.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="evoking"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (healing.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="healing"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (scrying.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="scrying"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (abjuring......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="abjuring"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (banishing.....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="banishing"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (conjuring.....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="conjuring"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (divining......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="divining"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (summoning.....) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="summoning"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (wand..........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="wand"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (rod...........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="rod"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (staff.........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="staff"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (amulet........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="amulet"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (ring..........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="ring"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| (talisman........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="talisman"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| (gold............) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="gold"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| (silver..........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="silver"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| (turning.........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="turning"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| (whittling.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="whittling"
+  >
+  </trigger>
+</triggers>
+
+<!--  Aliases  -->
+<aliases>
+  <alias
+   match="mindspace"
+   enabled="y"
+   ignore_case="y"
+   sequence="30"
+   script="QuowMindspaceGetter"
+  > 
+  </alias>
+  <alias
+   match="mindspace *"
+   enabled="y"
+   ignore_case="y"
+   sequence="30"
+   script="QuowMindspaceSetter"
+  > 
+  </alias>
+  <alias
+   match="help mindspace"
+   enabled="y"
+   ignore_case="y"
+   sequence="30"
+   script="QuowMindspaceHelp"
+  > 
+  </alias>
+  <alias
+   match="spells"
+   enabled="y"
+   sequence="40"
+   script="QuowResetSpells"
+  > 
+  </alias>
+  <alias
+   match="spells uncategorised"
+   enabled="y"
+   sequence="40"
+   script="QuowResetSpells"
+  > 
+  </alias>
+  <alias
+   match="spells uncategorized"
+   enabled="y"
+   sequence="40"
+   script="QuowResetSpells"
+  > 
+  </alias>
+</aliases>
+
+<!--  Timers  -->
+<timers>
+</timers>
+
+<script>
+<![CDATA[
+
+sQuowSkillLevels = {
+  [1] = "<1% Chance",
+  [2] = "10% Chance",
+  [3] = "20% Chance",
+  [4] = "30% Chance",
+  [5] = "40% Chance",
+  [6] = "50% Chance",
+  [7] = "60% Chance",
+  [8] = "70% Chance",
+  [9] = "80% Chance",
+  [10] = "90% Chance",
+  [11] = "99+% Chance",
+}
+
+sQuowSkillTree = {
+  ["air"] = 0,
+  ["earth"] = 0,
+  ["fire"] = 0,
+  ["water"] = 0,
+  ["animating"] = 0,
+  ["channeling"] = 0,
+  ["charming"] = 0,
+  ["convoking"] = 0,
+  ["cursing"] = 0,
+  ["binding"] = 0,
+  ["brewing"] = 0,
+  ["chanting"] = 0,
+  ["dancing"] = 0,
+  ["enchanting"] = 0,
+  ["evoking"] = 0,
+  ["healing"] = 0,
+  ["scrying"] = 0,
+  ["abjuring"] = 0,
+  ["banishing"] = 0,
+  ["conjuring"] = 0,
+  ["divining"] = 0,
+  ["summoning"] = 0,
+  ["wand"] = 0,
+  ["rod"] = 0,
+  ["staff"] = 0,
+  ["amulet"] = 0,
+  ["ring"] = 0,
+  ["talisman"] = 0,
+  ["gold"] = 0,
+  ["silver"] = 0,
+  ["turning"] = 0,
+  ["whittling"] = 0,
+}
+
+-- Add spells to this array - spellname is the array key, value is the mindspace
+iQuowMindspace = {
+  ["A Cup of Tea and Sake"]                          = {15, "cts",  "Miscellaneous", 25, 
+      {
+        {"channeling",          31,  41,  52,  58,  61,  74,  80,  97, 120, 156},
+        {"divining",            94, 101, 110, 117, 123, 137, 142, 152, 184, 206},
+        {"scrying",            140, 146, 156, 162, 169, 175, 182, 190, 220, 250},
+      }
+    },
+  ["Al'Hrahaz's Scintillating Blorpler"]             = {25, "ahsb", "Miscellaneous", 90, 
+      {
+        {"evoking",            189, 197, 203, 211, 218, 228, 236, 250, 269, 310},
+        {"channeling",         225, 232, 243, 249, 255, 265, 272, 285, 310, 340},
+        {"evoking",            185, 194, 198, 207, 212, 220, 228, 243, 260, 301},
+        {"chanting",           203, 212, 221, 228, 234, 246, 252, 270, 280, 315},
+        {"chanting",           230, 237, 246, 255, 259, 270, 277, 294, 310, 345},
+      }
+    },
+  ["Amazing Silicate Blorpler"]                      = {5,  "asb",  "Miscellaneous", 10, 
+      {
+        {"evoking",             60,  65,  70,  75,  80,  85,  90,  95, 105, 115},
+        {"channeling",          40,  45,  50,  55,  60,  65,  70,  80,  90, 100},
+        {"evoking",             60,  65,  70,  75,  80,  85,  90,  95, 105, 115},
+        {"chanting",            50,  55,  60,  65,  70,  75,  80,  85,  95, 105},
+        {"chanting",            50,  55,  60,  65,  70,  75,  80,  85,  90, 105},
+      }
+    },
+  ["Atmospheric Inscription Wonder"]                 = {25, "aiw",  "Miscellaneous", 80, 
+      {
+        {"animating",           92, 101, 109, 115, 121, 134, 140, 155, 178, 205},
+        {"fire",                76,  84,  94, 101, 107, 117, 123, 142, 160, 190},
+        {"binding",             86,  94, 103, 111, 117, 128, 134, 152, 170, 200},
+        {"channeling",          84,  92, 101, 109, 115, 126, 132, 149, 165, 195},
+      }
+    },
+  ["Bifram's Amazing Fireworks"]                     = {15, "baf",  "Miscellaneous", 50, 
+      {
+        {"animating",           90,  98, 108, 115, 121, 132, 139, 157, 179, 200},
+        {"fire",                79,  87,  96, 104, 110, 121, 126, 146, 168, 190},
+        {"binding",            106, 115, 124, 130, 137, 148, 153, 170, 190, 210},
+        {"channeling",         104, 113, 121, 128, 133, 143, 150, 168, 187, 205},
+      }
+    },
+  ["Booch's Extremal Polymorphism"]                  = {45, "bep",  "Miscellaneous", 70, 
+      {
+        {"channeling",         164, 172, 180, 187, 193, 205, 211, 226, 250, 280},
+        {"convoking",          164, 172, 180, 187, 193, 205, 211, 226, 250, 280},
+        {"evoking",            172, 178, 185, 193, 199, 211, 217, 234, 255, 290},
+        {"binding",            166, 174, 182, 190, 195, 210, 215, 232, 252, 282},
+        {"animating",          168, 176, 184, 192, 197, 212, 217, 234, 254, 285},
+      }
+    },
+  ["Boolywog's Forbidden Pleasures"]                 = {10, "bfp",  "Miscellaneous", 25, 
+      {
+        {"chanting",            40,  45,  50,  55,  60,  65,  70,  80,  90, 100},
+        {"charming",            50,  55,  60,  65,  70,  75,  80,  90, 100, 110},
+        {"summoning",           80,  90, 100, 105, 110, 115, 120, 130, 140, 150},
+      }
+    },
+  ["Brassica Oleracea Ambulata"]                     = {10, "boa",  "Miscellaneous", 25, 
+      {
+        {"evoking",             57,  65,  76,  82,  88,  99, 105, 123, 144, 185},
+        {"channeling",          61,  70,  78,  86,  91, 103, 109, 125, 148, 188},
+        {"animating",           74,  82,  90,  99, 104, 115, 121, 138, 161, 198},
+      }
+    },
+  ["Brother Happalon's Elementary Enchanting"]       = {5,  "bhee", "Miscellaneous", 35, 
+      {
+        {"evoking",             50,  55,  60,  65,  70,  75,  90, 105, 120, 135},
+        {"enchanting",          70,  75,  80,  85,  90,  95, 105, 120, 135, 155},
+        {"chanting",            60,  65,  70,  75,  80,  85,  95, 110, 130, 145},
+        {"enchanting",          75,  80,  90, 100, 105, 110, 120, 135, 150, 160},
+      }
+    },
+  ["Calm Embrace of Illusionary Beauty"]             = {25, "ceib", "Offensive",     50, 
+      {
+        {"conjuring",          150, 155, 160, 170, 175, 180, 185, 190, 205, 220},
+        {"charming",           160, 170, 180, 190, 195, 200, 205, 215, 225, 245},
+        {"staff",              160, 170, 180, 190, 195, 200, 205, 215, 225, 245},
+        {"air",                150, 155, 160, 170, 175, 180, 185, 190, 205, 225},
+      }
+    },
+  ["Cherry Blossoms in Bloom"]                       = {10, "cbb",  "Miscellaneous", 25, 
+      {
+        {"air",                115, 120, 130, 135, 140, 145, 150, 160, 170, 185},
+        {"channeling",         130, 140, 150, 155, 160, 165, 170, 180, 190, 200},
+        {"convoking",          115, 120, 130, 135, 140, 145, 150, 160, 170, 185},
+      }
+    },
+  ["Chrenedict's Corporeal Covering"]                = {25, "ccc",  "Defensive",     60, 
+      {
+        {"binding",            125, 130, 140, 145, 150, 155, 160, 165, 175, 180},
+        {"earth",              130, 135, 145, 150, 155, 160, 165, 175, 180, 190},
+        {"binding",            190, 200, 210, 215, 220, 225, 230, 240, 250, 270},
+      }
+    },
+  ["Collatrap's Instant Pickling Stick"]             = {10, "cips", "Miscellaneous", 20, 
+      {
+        {"conjuring",           70,  80,  90,  95, 100, 110, 115, 125, 130, 140},
+        {"evoking",             90, 100, 110, 115, 120, 130, 140, 150, 160, 170},
+        {"wand",               115, 125, 135, 145, 150, 155, 165, 174, 183, 192},
+        {"dancing",             70,  80,  90,  95, 100, 110, 115, 125, 130, 140},
+      }
+    },
+  ["Crondor's Fabulous Detection"]                   = {10, "cfd",  "Miscellaneous", 15, 
+      {
+        {"staff",               89,  98, 108, 114, 120, 132, 138, 156, 175, 210},
+        {"gold",                94, 102, 110, 118, 124, 134, 140, 158, 178, 214},
+        {"turning",             81,  89, 100, 106, 112, 124, 130, 148, 170, 204},
+      }
+    },
+  ["Crondor's Marvellous Sequestration"]             = {60, "cms2", "Miscellaneous", 350, 
+      {
+        {"staff",              178, 184, 189, 194, 199, 204, 209, 222, 235, 263},
+        {"ring",               276, 281, 286, 291, 297, 302, 310, 316, 328, 360},
+        {"convoking",          202, 208, 214, 220, 226, 232, 240, 249, 268, 286},
+        {"enchanting",         275, 280, 285, 290, 295, 300, 305, 316, 330, 368},
+        {"binding",            275, 281, 286, 291, 296, 303, 309, 320, 333, 364},
+      }
+    },
+  ["Crondor's Mysterious Sparkling"]                 = {40, "cms",  "Miscellaneous", 150, 
+      {
+        {"staff",              100, 105, 110, 115, 125, 130, 140, 146, 160, 180},
+        {"whittling",           75,  85,  90, 100, 105, 113, 120, 128, 141, 160},
+        {"binding",             90,  95, 100, 105, 115, 120, 130, 136, 150, 190},
+        {"enchanting",         105, 110, 115, 120, 128, 132, 142, 155, 185, 210},
+      }
+    },
+  ["Dismal Digit of Doom"]                           = {10, "ddd",  "Miscellaneous", 30, 
+      {
+        {"enchanting",          30,  35,  40,  45,  50,  55,  65,  75,  85, 100},
+        {"healing",             60,  65,  70,  75,  80,  85,  90, 100, 115, 130},
+        {"binding",             70,  75,  80,  85,  90, 100, 110, 120, 130, 140},
+        {"animating",          105, 110, 115, 120, 130, 140, 150, 160, 170, 180},
+      }
+    },
+  ["Doctor Kelleflump's Deadly Demon"]               = {60, "dkdd", "Offensive",     55, 
+      {
+        {"dancing",            291, 300, 306, 315, 322, 330, 337, 355, 377, 414},
+        {"cursing",            284, 293, 302, 311, 316, 326, 333, 350, 369, 410},
+        {"summoning",          293, 302, 313, 319, 324, 337, 344, 358, 381, 421},
+        {"abjuring",           295, 304, 315, 321, 326, 337, 344, 358, 381, 421},
+        {"banishing",          293, 300, 311, 317, 322, 333, 339, 353, 379, 419},
+      }
+    },
+  ["Doctor Worblehat's Flaming Primate Premonition"] = {25, "dwfpp","Miscellaneous", 100, 
+      {
+        {"turning",            172, 185, 190, 195, 200, 205, 214, 221, 236, 260},
+        {"gold",               204, 209, 214, 219, 224, 231, 236, 250, 280, 286},
+        {"enchanting",         230, 236, 241, 246, 251, 256, 261, 281, 288, 310},
+        {"binding",            254, 260, 265, 270, 276, 281, 286, 296, 313, 333},
+      }
+    },
+  ["Duander's Thaumic Luminosity Disperser"]         = {20, "dtld", "Miscellaneous", 30, 
+      {
+        {"chanting",            17,  25,  31,  40,  46,  58,  64,  82, 103, 145},
+        {"fire",                49,  58,  67,  76,  82,  91,  97, 115, 136, 175},
+        {"channeling",          52,  61,  70,  79,  85,  94, 100, 118, 139, 178},
+        {"banishing",           91, 100, 112, 117, 123, 133, 139, 160, 175, 210},
+      }
+    },
+  ["Effermhor's Hypersonic Assault"]                 = {30, "eha",  "Offensive",     40, 
+      {
+        {"evoking",            160, 165, 170, 175, 180, 185, 190, 200, 225, 240},
+        {"channeling",         160, 165, 170, 175, 180, 185, 190, 200, 220, 240},
+        {"binding",            160, 165, 170, 175, 180, 185, 190, 200, 220, 240},
+        {"dancing",            180, 185, 190, 195, 200, 210, 220, 230, 240, 260},
+        {"air",                180, 185, 190, 195, 200, 205, 210, 220, 240, 260},
+      }
+    },
+  ["Ellamandyr's Hyaline Amulet"]                    = {10, "eha2", "Miscellaneous", 15, 
+      {
+        {"wand",               127, 132, 138, 144, 150, 158, 164, 183, 210, 243},
+        {"water",              100, 106, 111, 116, 121, 129, 135, 154, 181, 215},
+        {"binding",            176, 182, 190, 195, 200, 208, 214, 233, 260, 291},
+        {"silver",              96, 101, 106, 111, 116, 124, 130, 149, 176, 210},
+      }
+    },
+  ["Endorphin's Floating Friend"]                    = {20, "eff",  "Defensive",     30, 
+      {
+        {"evoking",             80,  90, 100, 105, 110, 120, 130, 140, 150, 160},
+        {"animating",          110, 115, 125, 135, 140, 150, 160, 170, 180, 185},
+        {"binding",            120, 130, 140, 150, 160, 170, 180, 190, 200, 210},
+      }
+    },
+  ["Eringyas' Surprising Bouquet"]                   = {10, "esb",  "Miscellaneous", 10, 
+      {
+        {"channeling",          55,  65,  70,  75,  80,  85,  90,  95, 100, 110},
+        {"evoking",             40,  45,  50,  55,  60,  65,  70,  75,  80,  90},
+        {"charming",            30,  35,  40,  45,  50,  55,  60,  65,  70,  80},
+      }
+    },
+  ["Fabrication Classification Identification"]      = {15, "fci",  "Miscellaneous", 45, 
+      {
+        {"divining",            57,  65,  74,  83,  88,  98, 105, 122, 147, 184},
+        {"evoking",             76,  83,  94,  99, 105, 116, 122, 140, 162, 202},
+        {"convoking",           72,  81,  87,  94, 101, 112, 118, 138, 158, 197},
+      }
+    },
+  ["Fiddelmaker's Auriferous Embrace"]               = {20, "fae",  "Offensive",     50, 
+      {
+        {"wand",               200, 205, 215, 220, 230, 240, 250, 260, 270, 290},
+        {"gold",               210, 220, 230, 235, 240, 250, 260, 270, 280, 300},
+        {"animating",          200, 205, 215, 220, 230, 240, 250, 260, 270, 290},
+      }
+    },
+  ["Finneblaugh's Thaumic Float"]                    = {20, "ftf",  "Miscellaneous", 40, 
+      {
+        {"air",                175, 180, 190, 200, 205, 210, 220, 230, 240, 260},
+        {"evoking",            190, 200, 210, 215, 225, 240, 255, 265, 275, 285},
+        {"summoning",          200, 210, 220, 225, 235, 250, 265, 270, 280, 290},
+        {"air",                215, 225, 235, 245, 255, 260, 270, 280, 290, 300},
+      }
+    },
+  ["Floron's Fabulous Mirror"]                       = {15, "ffm",  "Miscellaneous", 40, 
+      {
+        {"channeling",         115, 124, 130, 139, 144, 154, 160, 178, 196, 240},
+        {"divining",           124, 129, 139, 145, 154, 160, 169, 187, 208, 245},
+        {"scrying",            199, 205, 214, 223, 229, 238, 244, 262, 286, 315},
+      }
+    },
+  ["Friddlefrod's Hydratic Extrusion"]               = {10, "fhe",  "Miscellaneous", 10, 
+      {
+        {"water",               45,  50,  60,  65,  70,  75,  80,  90, 100, 110},
+        {"evoking",             60,  70,  80,  85,  90,  95, 100, 110, 120, 130},
+        {"water",               80,  90, 100, 105, 110, 115, 120, 125, 130, 140},
+      }
+    },
+  ["Frygellhan's Fiendish Orbit Disruptor"]          = {15, "ffod", "Offensive",     25, 
+      {
+        {"evoking",             75,  80,  90,  95, 100, 105, 115, 120, 130, 140},
+        {"channeling",         120, 125, 135, 140, 150, 155, 160, 170, 175, 185},
+        {"binding",            130, 140, 150, 160, 170, 180, 190, 200, 210, 225},
+      }
+    },
+  ["Fyodor's Nimbus of Porterage"]                   = {35, "fnp",  "Miscellaneous", 75, 
+      {
+        {"water",              105, 110, 120, 125, 130, 135, 140, 150, 160, 170},
+        {"fire",                90,  95, 100, 110, 115, 120, 130, 140, 150, 160},
+        {"air",                110, 120, 125, 130, 135, 140, 150, 164, 183, 200},
+        {"summoning",          125, 130, 140, 145, 150, 160, 175, 184, 203, 215},
+        {"abjuring",            90,  95, 165, 175, 180, 185, 190, 200, 215, 230},
+      }
+    },
+  ["G'flott's Olfactory Nightmare"]                  = {30, "gon",  "Offensive",     40, 
+      {
+        {"evoking",            160, 165, 170, 175, 180, 185, 195, 205, 220, 240},
+        {"air",                160, 165, 170, 175, 180, 185, 195, 205, 220, 240},
+        {"dancing",            170, 175, 180, 185, 190, 195, 205, 215, 230, 250},
+        {"fire",               160, 165, 170, 175, 180, 185, 195, 205, 220, 240},
+        {"air",                180, 185, 190, 195, 200, 205, 210, 220, 240, 260},
+      }
+    },
+  ["Gillimer's Ring of Temperate Weather"]           = {25, "grtw", "Miscellaneous", 100, 
+      {
+        {"gold",               191, 200, 211, 218, 223, 232, 240, 260, 282, 315},
+        {"binding",            207, 216, 224, 231, 238, 249, 254, 273, 295, 330},
+        {"enchanting",         194, 200, 211, 218, 223, 236, 242, 260, 282, 318},
+        {"ring",               194, 200, 211, 218, 223, 236, 242, 260, 282, 318},
+      }
+    },
+  ["Grisald's Chilly Touch"]                         = {5,  "gct",  "Miscellaneous", 10, 
+      {
+        {"summoning",           60,  70,  80,  85,  90,  95, 100, 110, 120, 130},
+        {"healing",             80,  90, 100, 105, 110, 115, 120, 130, 140, 150},
+      }
+    },
+  ["Grisald's Reanimated Guardian"]                  = {40, "grg",  "Defensive",     55, 
+      {
+        {"summoning",          170, 180, 185, 190, 195, 200, 205, 210, 230, 255},
+        {"binding",            170, 180, 185, 190, 195, 200, 205, 210, 230, 255},
+        {"animating",          155, 160, 165, 170, 175, 180, 185, 190, 205, 215},
+        {"healing",            260, 270, 275, 280, 285, 295, 305, 315, 325, 335},
+      }
+    },
+  ["Gryntard's Feathery Reliever"]                   = {25, "gfr",  "Miscellaneous", 60, 
+      {
+        {"summoning",          130, 140, 150, 155, 160, 165, 170, 180, 190, 210},
+        {"air",                140, 150, 160, 170, 180, 185, 195, 205, 220, 240},
+        {"binding",            125, 135, 140, 145, 150, 155, 160, 170, 180, 200},
+        {"channeling",         155, 160, 170, 175, 180, 185, 195, 205, 220, 240},
+      }
+    },
+  ["Heezlewurst's Elemental Buffer"]                 = {30, "heb",  "Defensive",     20, 
+      {
+        {"channeling",         150, 155, 165, 170, 175, 185, 195, 205, 215, 230},
+        {"evoking",            170, 180, 185, 190, 200, 205, 215, 225, 235, 250},
+        {"binding",            155, 165, 170, 175, 180, 190, 200, 210, 220, 240},
+        {"enchanting",         155, 165, 170, 175, 180, 190, 200, 210, 220, 240},
+        {"convoking",          185, 190, 200, 210, 220, 230, 240, 250, 260, 280},
+      }
+    },
+  ["Independent Recurring Vocaliser"]                = {5,  "irv",  "Miscellaneous", 15, 
+      {
+        {"channeling",          50,  55,  60,  65,  70,  75,  85,  95, 105, 120},
+        {"binding",             90, 100, 110, 115, 120, 125, 130, 140, 150, 160},
+        {"evoking",             60,  65,  70,  75,  80,  85,  95, 105, 115, 130},
+      }
+    },
+  ["Jogloran's Portal of Cheaper Travel"]            = {20, "jpct", "Miscellaneous", 100, 
+      {
+        {"enchanting",         130, 140, 150, 155, 160, 170, 180, 192, 205, 220},
+        {"evoking",            130, 140, 150, 155, 160, 170, 180, 192, 205, 220},
+        {"binding",            130, 140, 150, 155, 160, 170, 180, 192, 210, 225},
+        {"dancing",            130, 140, 150, 155, 160, 170, 180, 192, 210, 225},
+        {"banishing",          160, 165, 170, 180, 190, 200, 210, 222, 235, 250},
+      }
+    },
+  ["Jorodin's Magnificent Communicator"]             = {20, "jmc",  "Miscellaneous", 50, 
+      {
+        {"channeling",         159, 168, 178, 183, 188, 200, 206, 224, 248, 284},
+        {"binding",            156, 166, 176, 182, 188, 200, 205, 222, 241, 281},
+        {"evoking",            123, 130, 140, 146, 154, 166, 171, 188, 212, 248},
+      }
+    },
+  ["Journey of the Heavenly Storm Dragon"]           = {75, "jhsd", "Offensive",     100, 
+      {
+        {"water",              320, 334, 344, 349, 354, 365, 372, 389, 410, 449},
+        {"air",                320, 334, 344, 349, 354, 365, 372, 389, 410, 449},
+        {"earth",              320, 334, 344, 349, 354, 365, 372, 389, 410, 449},
+        {"fire",               320, 334, 344, 349, 354, 365, 372, 389, 410, 449},
+        {"channeling",         355, 365, 370, 380, 385, 395, 401, 420, 440, 480},
+      }
+    },
+  ["Kamikaze Oryctolagus Flammula"]                  = {30, "kof",  "Offensive",     50, 
+      {
+        {"convoking",           90, 100, 110, 115, 120, 125, 130, 140, 150, 160},
+        {"fire",                90, 100, 110, 115, 120, 125, 130, 140, 150, 160},
+        {"convoking",          110, 120, 130, 135, 140, 145, 150, 160, 170, 185},
+        {"fire",                90, 100, 110, 115, 120, 125, 130, 140, 150, 160},
+      }
+    },
+  ["Kelleflump's Irritating Demon"]                  = {20, "kid",  "Offensive",     30, 
+      {
+        {"summoning",          120, 125, 130, 135, 140, 145, 150, 160, 165, 175},
+        {"cursing",            130, 135, 140, 145, 150, 155, 160, 165, 180, 205},
+        {"conjuring",          135, 140, 145, 150, 155, 160, 165, 175, 190, 215},
+        {"divining",           120, 125, 130, 135, 140, 145, 150, 160, 170, 180},
+      }
+    },
+  ["Kipperwald's Perlustration Prevention"]          = {15, "kpp",  "Defensive",     65, 
+      {
+        {"convoking",          190, 200, 210, 215, 220, 225, 230, 240, 250, 270},
+        {"scrying",            210, 220, 230, 240, 250, 255, 260, 270, 280, 290},
+        {"divining",           200, 205, 210, 220, 230, 235, 245, 255, 265, 280},
+      }
+    },
+  ["Malich's AshkEnte Circle"]                       = {10, "mac",  "Miscellaneous", 20, 
+      {
+        {"channeling",         181, 186, 192, 198, 204, 211, 219, 228, 243, 270},
+        {"chanting",           175, 182, 190, 195, 200, 205, 215, 225, 240, 270},
+        {"talisman",           100, 106, 114, 130, 140, 152, 160, 170, 180, 190},
+        {"staff",              175, 183, 191, 196, 202, 211, 220, 232, 253, 280},
+      }
+    },
+  ["Malich's AshkEnte Summoning Incantation"]        = {60, "masi", "Miscellaneous", 120, 
+      {
+        {"channeling",         290, 304, 314, 324, 334, 344, 354, 364, 380, 400},
+        {"abjuring",           300, 310, 320, 330, 340, 350, 360, 370, 390, 410},
+        {"summoning",          320, 330, 340, 350, 360, 370, 380, 395, 405, 435},
+      }
+    },
+  ["Malich's Penetrating Ocular Lance"]              = {5,  "mpol", "Offensive",     10, 
+      {
+        {"channeling",          30,  35,  40,  45,  50,  55,  60,  65,  70,  80},
+      }
+    },
+  ["Master Glimer's Amazing Glowing Thing"]          = {30, "mgagt","Miscellaneous", 150, 
+      {
+        {"evoking",             81,  93,  99, 109, 114, 126, 132, 147, 171, 206},
+        {"earth",              126, 135, 140, 145, 153, 165, 171, 189, 216, 252},
+        {"chanting",            99, 108, 117, 123, 132, 141, 147, 160, 174, 210},
+        {"binding",            147, 153, 162, 168, 177, 183, 193, 205, 230, 270},
+        {"enchanting",         203, 208, 219, 225, 234, 243, 248, 270, 291, 325},
+      }
+    },
+  ["Master Woddeley's Luminescent Companion"]        = {10, "mwlc", "Miscellaneous", 15, 
+      {
+        {"evoking",             53,  63,  74,  79,  84,  97, 102, 124, 144, 182},
+        {"channeling",          82,  92, 100, 106, 113, 123, 131, 149, 170, 202},
+        {"animating",          100, 106, 116, 123, 129, 142, 148, 162, 186, 216},
+      }
+    },
+  ["Memories of a Vicious Chicken"]                  = {5,  "mvc",  "Offensive",     10, 
+      {
+        {"healing",             55,  60,  65,  70,  75,  80,  85,  90, 100, 110},
+        {"summoning",           55,  60,  65,  70,  75,  80,  85,  90, 100, 110},
+        {"animating",           70,  75,  80,  85,  90,  95, 100, 110, 120, 130},
+      }
+    },
+  ["Mugwuddle's Muddling Mirage"]                    = {25, "mmm",  "Offensive",     55, 
+      {
+        {"air",                 75,  85,  90, 100, 105, 115, 125, 140, 160, 205},
+        {"animating",           95, 105, 110, 120, 130, 140, 145, 160, 185, 220},
+        {"summoning",          165, 175, 180, 190, 195, 205, 210, 229, 251, 290},
+        {"channeling",         135, 144, 153, 160, 165, 176, 181, 200, 220, 260},
+        {"conjuring",          178, 185, 194, 202, 210, 219, 225, 240, 265, 300},
+      }
+    },
+  ["Myrandil's Mask of Death"]                       = {10, "mmd",  "Miscellaneous", 30, 
+      {
+        {"enchanting",          81,  88,  98, 105, 112, 121, 128, 147, 169, 200},
+        {"healing",             84,  93, 103, 108, 115, 126, 131, 150, 171, 203},
+        {"summoning",          107, 115, 123, 130, 136, 147, 152, 171, 192, 220},
+        {"binding",            115, 123, 131, 138, 144, 155, 160, 179, 200, 228},
+        {"abjuring",           123, 131, 139, 146, 152, 163, 168, 187, 208, 236},
+      }
+    },
+  ["Myrandil's Vicious Seizure"]                     = {30, "mvs",  "Offensive",     75, 
+      {
+        {"summoning",          140, 150, 155, 165, 170, 175, 180, 185, 195, 210},
+        {"earth",              140, 150, 155, 165, 170, 175, 180, 185, 195, 210},
+        {"healing",            180, 190, 195, 200, 210, 220, 230, 240, 250, 265},
+        {"animating",          145, 150, 155, 160, 170, 175, 180, 185, 200, 220},
+      }
+    },
+  ["Nargl'frob's Empyrean Spear"]                    = {45, "nes",  "Offensive",     60, 
+      {
+        {"water",              170, 180, 185, 190, 195, 200, 205, 224, 247, 286},
+        {"air",                165, 180, 185, 190, 195, 200, 205, 221, 243, 282},
+        {"fire",               165, 180, 185, 190, 195, 200, 205, 219, 240, 278},
+        {"earth",              170, 180, 185, 190, 195, 200, 205, 226, 249, 288},
+        {"evoking",            170, 175, 180, 185, 190, 195, 200, 227, 250, 288}
+      }
+    },
+  ["Narquin's Hand of Acquisition"]                  = {30, "nha",  "Miscellaneous", 40, 
+      {
+        {"convoking",          112, 120, 128, 135, 143, 151, 159, 176, 197, 230},
+        {"healing",             89,  99, 107, 114, 120, 130, 138, 154, 174, 209},
+        {"animating",          122, 130, 140, 147, 152, 163, 170, 188, 209, 243},
+      }
+    },
+  ["Narquin's Mist of Doom"]                         = {15, "nmd",  "Offensive",     30, 
+      {
+        {"summoning",           95, 100, 110, 115, 120, 125, 135, 145, 155, 165},
+        {"healing",            105, 110, 120, 125, 130, 135, 140, 150, 155, 165},
+        {"abjuring",            95, 100, 110, 115, 120, 125, 135, 145, 155, 165},
+        {"animating",          120, 130, 140, 145, 150, 155, 160, 170, 175, 180},
+      }
+    },
+  ["Objandeller's Thaumic Funnel"]                   = {15, "otf",  "Miscellaneous", 15, 
+      {
+        {"water",               77,  85,  95, 102, 108, 120, 125, 142, 165, 195},
+        {"channeling",          91, 100, 108, 116, 122, 132, 138, 157, 178, 202},
+        {"dancing",             79,  87,  95, 104, 110, 120, 126, 144, 164, 190},
+        {"binding",             81,  89,  98, 106, 112, 122, 128, 146, 165, 192},
+      }
+    },
+  ["Old Bellicus' Brazen Knuckles"]                  = {25, "obbk", "Offensive",     50, 
+      {
+        {"evoking",             92,  99, 108, 115, 120, 129, 139, 152, 170, 200},
+        {"binding",             80,  86,  97, 104, 109, 118, 127, 142, 160, 190},
+        {"earth",               95, 105, 115, 121, 127, 139, 144, 162, 180, 210},
+        {"fire",                59,  68,  77,  83,  92, 104, 109, 127, 145, 180},
+        {"binding",             83,  92, 101, 106, 112, 124, 130, 147, 165, 195},
+      }
+    },
+  ["Patient Taming of the Quantum Weather Butterfly"]= {50, "ptqwb","Miscellaneous", 85, 
+      {
+        {"water",              154, 161, 173, 178, 183, 194, 202, 217, 240, 278},
+        {"earth",              179, 187, 194, 202, 210, 221, 227, 244, 266, 300},
+        {"air",                248, 255, 267, 274, 279, 289, 297, 316, 335, 370},
+        {"fire",               250, 257, 269, 276, 281, 291, 299, 318, 337, 372},
+        {"binding",            297, 305, 316, 324, 329, 339, 346, 362, 380, 410},
+      }
+    },
+  ["Polliwiggle's Puissancy Probe"]                  = {10, "ppp",  "Miscellaneous", 15, 
+      {
+        {"divining",            32,  40,  50,  57,  63,  73,  79,  98, 119, 160},
+        {"divining",            48,  57,  65,  73,  78,  90,  96, 112, 135, 171},
+      }
+    },
+  ["Pragi's Fiery Gaze"]                             = {30, "pfg",  "Offensive",     40, 
+      {
+        {"evoking",            160, 165, 170, 175, 180, 185, 190, 200, 215, 230},
+        {"channeling",         160, 165, 170, 175, 180, 185, 190, 200, 220, 235},
+        {"enchanting",         170, 175, 180, 185, 190, 195, 205, 215, 230, 240},
+        {"animating",          160, 165, 170, 175, 185, 195, 200, 205, 220, 235},
+        {"fire",               185, 190, 195, 200, 205, 210, 215, 225, 240, 255},
+      }
+    },
+  ["Pragi's Lost Gaze"]                              = {30, "plg",  "Offensive",     55, 
+      {
+        {"evoking",            130, 135, 145, 155, 160, 170, 180, 190, 200, 210},
+        {"evoking",            130, 135, 145, 155, 160, 170, 180, 190, 200, 210},
+        {"enchanting",         130, 135, 145, 155, 160, 170, 180, 190, 200, 210},
+        {"animating",          140, 145, 155, 165, 170, 180, 190, 200, 210, 220},
+        {"animating",          140, 145, 155, 165, 170, 180, 190, 200, 210, 220},
+        {"fire",               130, 135, 145, 155, 160, 170, 180, 190, 200, 210},
+      }
+    },
+  ["Pragi's Molten Gaze"]                            = {10, "pmg",  "Miscellaneous", 20, 
+      {
+        {"animating",          100, 105, 110, 115, 120, 125, 130, 135, 145, 165},
+        {"fire",               115, 120, 125, 135, 140, 150, 155, 165, 178, 199},
+        {"evoking",             90,  95, 100, 105, 110, 115, 125, 135, 145, 165},
+        {"channeling",         110, 115, 120, 130, 135, 145, 150, 160, 175, 195},
+      }
+    },
+  ["Professor Flambardie's Grim Amulet"]             = {50, "pfga", "Miscellaneous", 200, 
+      {
+        {"amulet",             130, 135, 140, 145, 150, 155, 165, 180, 200, 240},
+        {"water",              200, 210, 220, 225, 230, 240, 250, 265, 280, 305},
+        {"wand",               195, 205, 215, 220, 225, 235, 245, 260, 275, 300},
+        {"summoning",          225, 230, 240, 245, 250, 260, 270, 285, 300, 350},
+        {"binding",            220, 230, 240, 250, 260, 270, 280, 290, 305, 355},
+      }
+    },
+  ["Reckless Encouragement of Arcane Peacock"]       = {20, "reap", "Offensive",     65, 
+      {
+        {"air",                200, 206, 216, 225, 230, 241, 246, 264, 287, 320},
+        {"channeling",         225, 235, 243, 250, 257, 267, 273, 290, 310, 340},
+        {"divining",           275, 284, 293, 302, 307, 316, 325, 340, 360, 390},
+        {"binding",            250, 260, 268, 273, 282, 293, 299, 316, 339, 360},
+        {"enchanting",         270, 281, 290, 300, 305, 313, 320, 336, 350, 380},
+      }
+    },
+  ["Rubayak's Power Dispenser"]                      = {5,  "rpd",  "Miscellaneous", 20, 
+      {
+        {"enchanting",          70,  80,  90,  95, 100, 105, 115, 125, 140, 170},
+        {"channeling",          70,  80,  90,  95, 100, 105, 115, 125, 140, 170},
+        {"binding",             70,  80,  90,  95, 100, 105, 115, 125, 140, 170},
+      }
+    },
+  ["Rubayak's Power Storage"]                        = {30, "rps",  "Miscellaneous", 40, 
+      {
+        {"binding",             64,  74,  83,  89,  95, 108, 115, 130, 152, 189},
+        {"channeling",         161, 167, 177, 183, 189, 202, 208, 224, 240, 273},
+        {"enchanting",          92, 102, 111, 118, 124, 136, 142, 158, 180, 200},
+        {"enchanting",         152, 161, 167, 177, 183, 193, 199, 216, 239, 270},
+      }
+    },
+  ["Rugged Victor's Rodentia Vivisection"]           = {10, "rvrv", "Offensive",     15, 
+      {
+        {"charming",            59,  64,  71,  77,  83,  89,  95, 100, 112, 125},
+        {"dancing",             50,  55,  60,  65,  70,  75,  80,  85,  90, 100},
+      }
+    },
+  ["Sageroff's Sentry Summoning"]                    = {30, "sss2", "Defensive",     35, 
+      {
+        {"fire",               111, 122, 131, 136, 142, 153, 159, 175, 201, 237},
+        {"charming",           114, 125, 134, 139, 142, 156, 162, 178, 204, 240},
+        {"summoning",          131, 139, 147, 156, 161, 170, 178, 197, 217, 252},
+        {"abjuring",            91,  97, 105, 114, 120, 130, 170, 209, 234, 268},
+      }
+    },
+  ["Scolorid's Scintillating Scribbling"]            = {10, "sss",  "Miscellaneous", 10, 
+      {
+        {"evoking",             80,  90, 100, 110, 120, 130, 140, 150, 160, 170},
+        {"binding",             85,  95, 105, 115, 125, 135, 145, 155, 165, 175},
+        {"convoking",           90, 100, 110, 120, 130, 140, 150, 160, 170, 180},
+        {"enchanting",         100, 110, 120, 130, 140, 150, 160, 170, 180, 190},
+      }
+    },
+  ["Skeetbraskin's Fuliginous Perdition"]            = {20, "sfp2", "Offensive",     20, 
+      {
+        {"summoning",          119, 125, 134, 139, 146, 155, 164, 182, 203, 236},
+        {"abjuring",           203, 208, 218, 224, 233, 242, 248, 266, 287, 320},
+        {"banishing",          182, 197, 203, 209, 215, 224, 233, 251, 272, 308},
+        {"conjuring",          175, 180, 185, 191, 196, 209, 214, 230, 250, 293},
+      }
+    },
+  ["Sorklin's Field of Protection"]                  = {10, "sfp",  "Defensive",     15, 
+      {
+        {"evoking",             60,  65,  70,  75,  80,  85,  90,  95, 100, 110},
+        {"air",                 50,  55,  60,  65,  70,  75,  80,  85,  90, 100},
+        {"channeling",          70,  75,  80,  85,  90,  95, 100, 105, 110, 120},
+      }
+    },
+  ["Sorsalsean's Seismic Eruption"]                  = {40, "sse",  "Offensive",     50, 
+      {
+        {"earth",              176, 183, 192, 198, 204, 215, 221, 233, 256, 285},
+        {"evoking",            170, 180, 189, 195, 202, 211, 219, 230, 250, 280},
+        {"chanting",           176, 183, 192, 198, 204, 215, 221, 233, 256, 285},
+        {"channeling",         170, 180, 189, 195, 202, 211, 219, 230, 250, 280},
+        {"dancing",            150, 159, 160, 176, 181, 192, 198, 215, 235, 250},
+      }
+    },
+  ["Stacklady's Morphic Resonator"]                  = {40, "smr",  "Offensive",     60, 
+      {
+        {"channeling",         280, 290, 303, 308, 316, 326, 331, 345, 365, 390},
+        {"evoking",            224, 233, 241, 250, 255, 264, 270, 290, 300, 340},
+        {"enchanting",         240, 250, 260, 265, 270, 284, 290, 300, 326, 364},
+      }
+    },
+  ["Thousand Dancing Celestial Fates"]               = {20, "tdcf", "Miscellaneous", 50, 
+      {
+        {"dancing",            120, 130, 140, 145, 150, 155, 160, 165, 170, 180},
+        {"turning",            120, 130, 140, 145, 150, 155, 160, 165, 170, 180},
+        {"whittling",          120, 130, 140, 145, 150, 155, 160, 165, 170, 180},
+        {"enchanting",         140, 150, 160, 165, 170, 175, 180, 185, 190, 200},
+        {"binding",            140, 150, 160, 165, 170, 175, 180, 185, 190, 200}
+      }
+    },
+  ["Torqvald's Illusion Generatrix"]                 = {50, "tig",  "Miscellaneous", 100, 
+      {
+        {"air",                188, 196, 206, 212, 217, 227, 236, 252, 271, 300},
+        {"binding",            196, 206, 212, 220, 225, 236, 241, 260, 280, 312},
+        {"conjuring",          190, 197, 206, 215, 220, 230, 236, 254, 274, 307},
+        {"charming",           170, 179, 187, 196, 201, 211, 217, 236, 257, 290},
+        {"channeling",         203, 211, 223, 227, 233, 244, 252, 268, 288, 318},
+        {"conjuring",          185, 193, 203, 209, 217, 227, 233, 252, 270, 298},
+        {"charming",           233, 241, 250, 257, 263, 274, 279, 298, 317, 346},
+      }
+    },
+  ["Torqvald's Many Colours"]                        = {10, "tmc",  "Miscellaneous", 15, 
+      {
+        {"air",                 50,  60,  70,  75,  80,  85,  90, 100, 110, 120},
+        {"channeling",          60,  70,  80,  90, 100, 105, 110, 120, 130, 140},
+        {"charming",            70,  80,  90, 100, 105, 110, 115, 125, 135, 145},
+      }
+    },
+  ["Transcendent Pneumatic Alleviator"]              = {25, "tpa",  "Defensive",     45, 
+      {
+        {"evoking",             90,  95, 100, 105, 110, 120, 130, 140, 150, 165},
+        {"air",                105, 110, 120, 125, 130, 140, 145, 150, 160, 175},
+        {"chanting",           105, 110, 120, 125, 130, 140, 150, 160, 170, 185},
+        {"enchanting",         105, 110, 120, 125, 130, 140, 150, 185, 200, 210},
+      }
+    },
+  ["Turnwhistle's Effulgent Autiridescence"]         = {10, "tea",  "Miscellaneous", 150, 
+      {
+        {"divining",           138, 143, 150, 155, 160, 165, 175, 185, 195, 210},
+        {"convoking",          176, 194, 203, 214, 220, 225, 230, 240, 250, 270},
+        {"evoking",            200, 210, 215, 220, 225, 235, 245, 255, 265, 280},
+        {"binding",            200, 210, 215, 220, 225, 235, 245, 255, 265, 280},
+      }
+    },
+  ["Union of the Phoenix and Divine Dragon"]         = {25, "updd", "Miscellaneous", 50, 
+      {
+        {"channeling",         145, 150, 160, 165, 170, 180, 185, 195, 205, 215},
+        {"summoning",          150, 160, 170, 175, 180, 185, 195, 205, 215, 235},
+        {"charming",           180, 185, 195, 200, 205, 215, 225, 235, 245, 255},
+      }
+    },
+  ["Von Hasselhoff's Skin Condition"]                = {35, "vhsc", "Offensive",     65, 
+      {
+        {"convoking",          160, 166, 175, 183, 190, 199, 205, 225, 240, 270},
+        {"healing",            144, 150, 159, 166, 172, 185, 190, 208, 230, 260},
+        {"charming",           125, 134, 141, 148, 155, 167, 172, 187, 200, 245},
+        {"binding",            160, 166, 175, 183, 190, 199, 205, 225, 240, 270},
+      }
+    },
+  ["Wonker's Wicked Wobble"]                         = {45, "www",  "Offensive",     40, 
+      {
+        {"gold",               260, 270, 280, 290, 300, 310, 320, 330, 340, 350},
+        {"binding",            160, 165, 170, 175, 185, 200, 215, 230, 245, 260},
+        {"rod",                170, 175, 185, 190, 200, 205, 215, 225, 235, 250},
+        {"enchanting",         170, 175, 185, 190, 200, 205, 215, 225, 235, 250},
+      }
+    },
+  ["Worstler's Advanced Metallurgical Glance"]       = {15, "wamg", "Miscellaneous", 20, 
+      {
+        {"animating",            9,  17,  24,  33,  38,  50,  56,  74,  95, 133},
+        {"divining",            50,  58,  66,  73,  79,  90,  98, 115, 135, 169},
+        {"scrying",             57,  65,  73,  80,  86,  97, 105, 122, 142, 176},
+      }
+    },
+  ["Worstler's Elementary Mineralogical Glance"]     = {5,  "wemg", "Miscellaneous", 10, 
+      {
+        {"earth",               30,  35,  40,  45,  50,  55,  60,  70,  80,  90},
+        {"evoking",             40,  45,  50,  55,  60,  65,  70,  80,  90, 100},
+        {"scrying",             70,  80,  90,  95, 100, 105, 110, 115, 125, 135},
+      }
+    },
+  ["Wungle's Body Part Suggestion"]                  = {30, "wbps", "Offensive",     25, 
+      {
+        {"summoning",           40,  49,  52,  65,  71,  83,  89, 106, 130, 170},
+        {"healing",             32,  40,  50,  55,  61,  74,  80,  98, 119, 158},
+        {"animating",          122, 129, 136, 144, 150, 162, 169, 186, 200, 230},
+        {"binding",             71,  80,  89,  96, 101, 113, 119, 136, 158, 190},
+      }
+    },
+  ["Wungle's Great Sucking"]                         = {35, "wgs",  "Offensive",     50, 
+      {
+        {"summoning",          170, 175, 180, 190, 200, 205, 210, 220, 230, 250},
+        {"chanting",           170, 175, 180, 190, 200, 205, 210, 220, 230, 250},
+        {"healing",            170, 180, 190, 200, 205, 210, 220, 230, 240, 260},
+        {"cursing",            185, 195, 200, 210, 220, 225, 235, 244, 255, 270},
+      }
+    },
+  ["Wurphle's Midnight Snack"]                       = {25, "wms",  "Miscellaneous", 35, 
+      {
+        {"channeling",         102, 110, 121, 127, 133, 144, 150, 169, 189, 221},
+        {"evoking",            119, 125, 135, 141, 148, 158, 165, 183, 202, 238},
+        {"convoking",          119, 127, 135, 144, 150, 160, 167, 183, 204, 238},
+      }
+    },
+  ["Yordon's Extremal Extension"]                    = {35, "yee",  "Miscellaneous", 70, 
+      {
+        {"channeling",          71,  78,  88,  95, 103, 111, 118, 135, 157, 195},
+        {"convoking",           76,  85,  93, 100, 106, 116, 123, 140, 162, 199},
+        {"evoking",             79,  88,  95, 102, 109, 118, 125, 142, 165, 202},
+        {"binding",             95, 102, 111, 118, 123, 135, 140, 159, 181, 215},
+        {"animating",          111, 118, 128, 135, 140, 152, 157, 175, 197, 230},
+      }
+    },
+  -- Witch spells!
+  ["Banishing of Loquacious Spirits"]                = {5,  "bls",  "Miscellaneous", 20, 
+      {
+      }
+    },
+  ["Banishing of Prying Eyes"]                       = {5,  "bpe",  "Defensive",     25, 
+      {
+      }
+    },
+  ["Banishing of Unnatural Urges"]                   = {5,  "buu",  "Defensive",     25, 
+      {
+      }
+    },
+  ["Biddy Amble's Bee Buzzer"]                       = {60, "babb", "Miscellaneous", 200, 
+      {
+      }
+    },
+  ["Delusions of Grandeur"]                          = {50, "dog",  "Miscellaneous", 100, 
+      {
+      }
+    },
+  ["Gammer Shorga's Clever Creeper"]                 = {20, "gscc", "Miscellaneous", 70, 
+      {
+      }
+    },
+  ["Gammer Shorga's Helpful Undergrowth"]            = {25, "gshu", "Offensive",     70, 
+      {
+      }
+    },
+  ["Gammer Tumult's Amalgamator"]                    = {20, "gta",  "Miscellaneous", 45, 
+      {
+      }
+    },
+  ["Goodie Whemper's Apple Divination"]              = {20, "gwad", "Miscellaneous", 40, 
+      {
+      }
+    },
+  ["Grammer Scorbic's Household Guard"]              = {20, "gshg", "Defensive",     50, 
+      {
+      }
+    },
+  ["Granny Beedle's Cooperative Credits"]            = {40, "gbcc", "Miscellaneous", 60, 
+      {
+      }
+    },
+  ["Granny Benedict's Bond of Loyalty"]              = {50, "gbbl", "Miscellaneous", 80, 
+      {
+      }
+    },
+  ["Granny Lipintense's Layer of Lard"]              = {10, "glll", "Miscellaneous", 30, 
+      {
+      }
+    },
+  ["Hag's Blessing"]                                 = {10, "hb",   "Miscellaneous", 25, 
+      {
+      }
+    },
+  ["Mama Blackwing's Potent Preserver"]              = {20, "mbpp", "Miscellaneous", 75, 
+      {
+      }
+    },
+  ["Mama Kolydina's Instant Infestation"]            = {45, "mkii", "Defensive",     70, 
+      {
+      }
+    },
+  ["Mother Brynda's Call of Gravity"]                = {20, "mbcg", "Offensive",     50, 
+      {
+      }
+    },
+  ["Mother Feelbright's Busy Bees"]                  = {60, "mfbb", "Offensive",     75, 
+      {
+      }
+    },
+  ["Mother Harblist's Fruity Flyer"]                 = {60, "mhff", "Miscellaneous", 200, 
+      {
+      }
+    },
+  ["Mother Twinter's Yarrow Enchantment"]            = {5,  "mtye", "Miscellaneous", 60, 
+      {
+      }
+    },
+  ["Nanny Revere's Traitorous Talisman"]             = {50, "nrtt", "Miscellaneous", 80, 
+      {
+      }
+    },
+  ["Wee Flaudia's Fluffy Ear Muffs"]                 = {10, "wffem","Defensive",     30, 
+      {
+      }
+    },
+}
+
+iQuowAvailableMS = GetVariable("iQuowAvailableMS")
+if (iQuowAvailableMS == nil) then
+  ColourNote("red", "black", "Please issue the command 'mindspace' to have the plugin calculate your total mindspace")
+  Note("You can get help with the mindspace plugin by typing 'help mindspace'")
+end
+
+iQuowTotalMS = 0
+iQuowDefMS = 0
+iQuowOffMS = 0
+iQuowMiscMS = 0
+iQuowSpells = 0
+iQuowDefSpells = 0
+iQuowOffSpells = 0
+iQuowMiscSpells = 0
+iQuowMSProcess = 0
+iQuowNeed = 0
+iQuowDone = 0
+
+function QuowResetSpells (sName, sLine, wildcards)
+  Send(sLine)
+  iQuowTotalMS = 0
+  iQuowDefMS = 0
+  iQuowOffMS = 0
+  iQuowMiscMS = 0
+  iQuowSpells = 0
+  iQuowDefSpells = 0
+  iQuowOffSpells = 0
+  iQuowMiscSpells = 0
+  iQuowMSProcess = 0
+end
+
+function QuowMindspaceGetter (sName, sLine, wildcards)
+  EnableTrigger("QuowMindspaceCheck", true)
+  Send("skills ma.sp.sp raw")
+end
+
+function QuowMindspaceHelp (sName, sLine, wildcards)
+  ColourNote("orange", "black", "Quow's Mindspace Plugin:")
+  Note("'help mindspace'             :  This help information")
+  Note("'mindspace'                  :  Let the plugin record your mindspace")
+  Note("'mindspace skills'           :  Let the plugin record all your skill bonuses for spellcheck and TM check tools")
+  Note("'mindspace <spell acronym>'  :  Lookup spellname, GP cost, mindspace, and full spellcheck data, eg 'mindspace tpa'")
+  Note("'mindspace <skillname>'      :  List ALL spells that use this skill (may be a lot!), and suggest TM worthy spells")
+  Note("                                Must be skill name only, eg 'mindspace fire'  'mindspace channeling'")
+  Note("'spells'                     :  Show all remembered spells with mindspace used/free information added")
+  Note("'spells uncategorised'       :  Show all remembered spells with mindspace used/free information added, uncategorised")
+end
+
+function QuowGetMethod (sName, sLine, wildcards)
+  EnableTrigger(sName, false)
+  local iThisBonus = tonumber(wildcards[3])
+  local sSkillName = wildcards[1]
+  if (sQuowSkillTree[sName] ~= nil) then
+    sQuowSkillTree[sName] = tonumber(iThisBonus)
+    iQuowDone = iQuowDone + 1
+    if (iQuowDone >= iQuowNeed) then
+      local sCommand = 'ColourNote ("orange", "black", "Skills recorded, you can now spellcheck with:  mindspace <acronym>  or lookup a skill with:  mindspace <skill>")'
+      DoAfterSpecial (1, sCommand, sendto.script)
+    end
+    --Note(sName .. " = " .. iThisBonus)
+  end
+end
+
+function QuowMindspaceSetter (sName, sLine, wildcards)
+  local iThisSpace = tonumber(wildcards[1])
+  if (iThisSpace == nil or iThisSpace == 0) then
+    local sAcronym = string.lower(wildcards[1])
+    local bAnyFound = false
+    local sSpellName = ""
+    if (sAcronym == "skills") then
+      iQuowNeed = 0
+      iQuowDone = 0
+      for sKey, iValue in pairs (sQuowSkillTree) do
+        EnableTrigger(sKey, true)
+        iQuowNeed = iQuowNeed + 1
+      end
+      ColourNote("red", "black", "Checking your skills and recording your bonuses in memory...")
+      Send("skills")
+    else
+      -- See if any spells appear
+      for sKey, iValue in pairs (iQuowMindspace) do
+        if (iValue[2] == sAcronym) then
+          sSpellName = sKey
+          bAnyFound = true
+          break
+        end
+      end
+      if (bAnyFound == true) then
+        Note("")
+        Note(string.upper(sAcronym) .. ": " .. sSpellName .. ".  Mindspace = " .. tostring(iQuowMindspace[sSpellName][1]) .. ", GP Cost = " .. tostring(iQuowMindspace[sSpellName][4]))
+        Note("It is categorised as " .. iQuowMindspace[sSpellName][3] .. ".")
+        -- Get the spellcheck data and display it nicely?
+        Note("")
+        Note("(type 'mindspace skills' to update the plugin with your current bonuses for accurate spellchecks)")
+        ColourNote("orange", "black", "Skill        Fail ->->->->->->->->->->->-> Equal ->->->->->->->->->->->- Success  Chance [bonus]")
+        --                             water        <320  320+  334+  344+  349+  354+  365+  372+  389+  410+  449+
+        for sKey, iValue in pairs (iQuowMindspace[sSpellName][5]) do
+          local iMyBonus = sQuowSkillTree[iValue[1]]
+          if (iMyBonus == nil) then
+            iMyBonus = 0
+          end
+          local sFormatStringPre = ""
+          local sFormatStringMid = ""
+          local sFormatStringPost = ""
+          sFormatStringPre = string.format("%-12s ", iValue[1])
+          local iN = 0
+          local iMyLevel = 1
+          local iThisDifficulty = 0
+          for iN = 1, 11 do
+            if (iN == 1) then
+              iThisDifficulty = iValue[2]
+            else
+              iThisDifficulty = iValue[iN]
+            end
+            if (iMyBonus >= iThisDifficulty) then
+              iMyLevel = iN
+            end
+          end
+          for iN = 1, 11 do
+            local sBonus = ""
+            if (iN == 1) then
+              sBonus = "<" .. tostring(iValue[2])
+            else
+              sBonus = tostring(iValue[iN])
+            end
+            if (iN < iMyLevel) then
+              sFormatStringPre = sFormatStringPre .. string.format("%-6s", sBonus)
+            elseif (iN == iMyLevel) then
+              sFormatStringMid = sFormatStringMid .. string.format("%-6s", sBonus)
+            else
+              sFormatStringPost = sFormatStringPost .. string.format("%-6s", sBonus)
+            end
+          end
+          ColourNote("cyan", "black", sFormatStringPre, "orange", "black", sFormatStringMid, "red", "black", sFormatStringPost, "cyan", "black", "   " .. sQuowSkillLevels[iMyLevel] .. " [" .. tostring(iMyBonus) .. "]")
+        end
+      else
+        -- Check if they wanted to check a TM-able skill or not
+        local sSkill = string.lower(wildcards[1])
+        if (sQuowSkillTree[sSkill] == nil) then
+          Note("")
+          ColourNote("orange", "black", "Unable to find any spell with the acronym of: " .. wildcards[1])
+          ColourNote("orange", "black", "(for TM possibilities, type 'mindspace <full skillname>' eg 'mindspace channeling', don't use the full skill tree path)")
+        else
+          Note("")
+          local iMyBonus = sQuowSkillTree[sSkill]
+          if (iMyBonus == 0) then
+            ColourNote("red", "black", "Have you typed 'mindspace skills' for the plugin to record your bonuses?")
+          end
+          ColourNote("orange", "black", "All spells that use the '" .. sSkill .. "' skill [your bonus=" .. tostring(iMyBonus) .. "]")
+          -- Loop through all spell tables
+          local iBonusDistanceDown = nil
+          local sSpellDown = ""
+          local sSpellDownName = ""
+          local iBonusDistanceUp = nil
+          local sSpellUp = ""
+          local sSpellUpName = ""
+          local iThisDistance = 0
+          for sKey, iValue in pairs (iQuowMindspace) do
+            -- Look for matching skills
+            for sSkillKey, iSkillValue in pairs (iValue[5]) do
+              if (sSkill == iSkillValue[1]) then
+                iThisDistance = iMyBonus - iSkillValue[6]
+                local sThisNote = ""
+                if (iThisDistance <= 0) then
+                  if (iBonusDistanceDown == nil or iThisDistance > iBonusDistanceDown) then
+                    iBonusDistanceDown = iThisDistance
+                    sSpellDown = iValue[2]
+                    sSpellDownName = sKey
+                  end
+                  sThisNote = "ABOVE your bonus"
+                  iThisDistance = -1 * iThisDistance
+                elseif (iThisDistance > 0) then
+                  if (iBonusDistanceUp == nil or iThisDistance < iBonusDistanceUp) then
+                    iBonusDistanceUp = iThisDistance
+                    sSpellUp = iValue[2]
+                    sSpellUpName = sKey
+                  end
+                  sThisNote = "BELOW your bonus"
+                end
+                Note(sKey .. " ('mindspace " .. iValue[2] .. "') has a check " .. tostring(iThisDistance) .. " " .. sThisNote)
+              end
+            end
+          end
+          if (sSpellDown == "" and sSpellUp == "") then
+            ColourNote("orange", "black", "Sorry, but no spells using that skill could be found.")
+          else
+            ColourNote("orange", "black", "Possible TM spell suggestion(s):")
+            if (sSpellDown ~= "") then
+              Note(sSpellDownName .. " ('mindspace " .. sSpellDown .. "') for a harder spell")
+            end
+            if (sSpellUp ~= "") then
+              Note(sSpellUpName .. " ('mindspace " .. sSpellUp .. "') for an easier spell")
+            end
+          end
+        end
+      end
+    end
+  else
+    SetVariable("iQuowAvailableMS", iThisSpace)
+    iQuowAvailableMS = iThisSpace
+    Note("Mindspace manually set to " .. tostring(iQuowAvailableMS) .. " (this should be your ma.sp.sp raw bonus, plus 30)")
+  end
+end
+
+
+function QuowMindspaceParse (sName, sLine, wildcards)
+  EnableTrigger("QuowMindspaceCheck", false)
+  local iThisSpace = tonumber(wildcards[2])
+  SetVariable("iQuowAvailableMS", iThisSpace + 30)
+  iQuowAvailableMS = iThisSpace + 30
+  Note("Mindspace automatically set to " .. tostring(iQuowAvailableMS))
+end
+
+function QuowSpellStart (sName, sLine, wildcards)
+  EnableTrigger("QuowLineCheck", true)
+  if (wildcards[1] == " defensive ") then
+    iQuowMSProcess = 1
+    iQuowDefMS = 0
+    iQuowDefSpells = 0
+  elseif (wildcards[1] == " offensive ") then
+    iQuowMSProcess = 2
+    iQuowOffMS = 0
+    iQuowOffSpells = 0
+  elseif (wildcards[1] == " misc ") then
+    iQuowMSProcess = 3
+    iQuowMiscMS = 0
+    iQuowMiscSpells = 0
+  else
+    iQuowMSProcess = 0
+    iQuowMiscMS = 0
+    iQuowOffMS = 0
+    iQuowDefMS = 0
+    iQuowSpells = 0
+    iQuowDefSpells = 0
+    iQuowOffSpells = 0
+    iQuowMiscSpells = 0
+  end
+  --Note("Enabling line-check type=" .. tostring(iQuowMSProcess))
+end
+
+function QuowSpellCheck (sName, sLine, wildcards)
+  if (sLine == "") then
+    --Note("Disabling line-check due to blank line")
+    EnableTrigger("QuowLineCheck", false)
+    QuowReportSpellSpace()
+    return
+  end
+  local bAnyFound = false
+  -- See if any spells appear
+  for sKey, iValue in pairs (iQuowMindspace) do
+    if (string.find(sLine, sKey)) then
+      bAnyFound = true
+      iQuowTotalMS = iQuowTotalMS + iValue[1]
+      iQuowSpells = iQuowSpells + 1
+      if (iQuowMSProcess == 1) then
+        iQuowDefMS = iQuowDefMS + iValue[1]
+        iQuowDefSpells = iQuowDefSpells + 1
+      elseif (iQuowMSProcess == 2) then
+        iQuowOffMS = iQuowOffMS + iValue[1]
+        iQuowOffSpells = iQuowOffSpells + 1
+      elseif (iQuowMSProcess == 3) then
+        iQuowMiscMS = iQuowMiscMS + iValue[1]
+        iQuowMiscSpells = iQuowMiscSpells + 1
+      end
+    end
+  end
+
+  if (bAnyFound == false) then
+    EnableTrigger("QuowLineCheck", false)
+    QuowReportSpellSpace()
+    return
+  end
+end
+
+function QuowReportSpellSpace()
+  if (iQuowMSProcess == 1) then
+    ColourNote("orange", "black", "Defensive mindspace: " .. tostring(iQuowDefMS) .. " [" .. tostring(iQuowDefSpells) .. " spells]")
+    iQuowDefMS = 0
+    iQuowDefSpells = 0
+  elseif (iQuowMSProcess == 2) then
+    ColourNote("orange", "black", "Offensive mindspace: " .. tostring(iQuowOffMS) .. " [" .. tostring(iQuowOffSpells) .. " spells]")
+    iQuowOffMS = 0
+    iQuowOffSpells = 0
+  elseif (iQuowMSProcess == 3) then
+    ColourNote("orange", "black", "Misc mindspace: " .. tostring(iQuowMiscMS) .. " [" .. tostring(iQuowMiscSpells) .. " spells]")
+    iQuowMiscMS = 0
+    iQuowMiscSpells = 0
+  end
+  if (iQuowAvailableMS ~= nil) then
+    ColourNote("orange", "black", "Total Mindspace: " .. tostring(iQuowTotalMS) .. " / " .. tostring(iQuowAvailableMS) .. " [" .. tostring(iQuowSpells) .. " spells, " .. tostring(tonumber(iQuowAvailableMS) - tonumber(iQuowTotalMS)) .. " mindspace free]\n")
+  else
+    ColourNote("orange", "black", "Total Mindspace: " .. tostring(iQuowTotalMS) .. " [" .. tostring(iQuowSpells) .. " spells]\n")
+    ColourNote("red", "black", "Please issue the command 'mindspace' to have the plugin calculate your total mindspace")
+  end
+end
+
+]]>
+</script> 
+
+</muclient>
