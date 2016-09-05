@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE muclient>
 
-<!-- Spell Mindspace calculator for wizzards by Quow (Azzer) -->
+<!-- Mindspace calculator, Spellchecker, and magical TM Advisor for wizzards and witches, by Quow -->
 
 <muclient>
 <plugin
@@ -9,11 +9,11 @@
    author="Quow"
    id="bff25338e014986ba3b56e2c"
    language="Lua"
-   purpose="Mindspace calc, spellchecks and more"
+   purpose="Mindspace, Spellchecks and more"
    date_written="2016-08-25"
    save_state="y"
-   requires="4.94"
-   version="1.02"
+   requires="4.84"
+   version="1.1"
    >
 </plugin>
 
@@ -404,6 +404,39 @@
    name="whittling"
   >
   </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (herbal........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="herbal"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| \| (shaping.......) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="shaping"
+  >
+  </trigger>
+  <trigger
+   enabled="n"
+   ignore_case="n"
+   keep_evaluating="y"
+   match="^.{0,}\| \| (weaving.........) {1,3}([0-9]{1,4}) {1,3}([0-9]{1,4}).{0,}$"
+   regexp="y"
+   script="QuowGetMethod"
+   sequence="15"
+   name="weaving"
+  >
+  </trigger>
 </triggers>
 
 <!--  Aliases  -->
@@ -509,6 +542,9 @@ sQuowSkillTree = {
   ["silver"] = 0,
   ["turning"] = 0,
   ["whittling"] = 0,
+  ["herbal"] = 0,
+  ["shaping"] = 0,
+  ["weaving"] = 0,
 }
 
 -- Add spells to this array - spellname is the array key, value is the mindspace
@@ -1211,91 +1247,166 @@ iQuowMindspace = {
   -- Witch spells!
   ["Banishing of Loquacious Spirits"]                = {5,  "bls",  "Miscellaneous", 20, 
       {
-      }
+        {"scrying",             52,  55,  61,  68,  72,  79,  86, 101, 125, 154},
+        {"abjuring",           152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"banishing",          152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+      }, true
     },
   ["Banishing of Prying Eyes"]                       = {5,  "bpe",  "Defensive",     25, 
       {
-      }
+        {"air",                122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"banishing",          122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"abjuring",           122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+      }, true
     },
   ["Banishing of Unnatural Urges"]                   = {5,  "buu",  "Defensive",     25, 
       {
-      }
+        {"conjuring",          122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"fire",               122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"banishing",          122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+      }, true
     },
   ["Biddy Amble's Bee Buzzer"]                       = {60, "babb", "Miscellaneous", 200, 
       {
-      }
+        {"charming",           202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+        {"dancing",            182, 185, 191, 198, 202, 209, 216, 231, 255, 284},
+        {"chanting",           182, 185, 191, 198, 202, 209, 216, 231, 255, 284},
+        {"herbal",              62,  65,  71,  78,  82,  89,  96, 111, 135, 164},
+      }, true
     },
   ["Delusions of Grandeur"]                          = {50, "dog",  "Miscellaneous", 100, 
       {
-      }
+        {"divining",           152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"convoking",          202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+        {"enchanting",         252, 255, 261, 268, 272, 279, 286, 301, 325, 354},
+      }, true
     },
   ["Gammer Shorga's Clever Creeper"]                 = {20, "gscc", "Miscellaneous", 70, 
       {
-      }
+        {"charming",           277, 280, 286, 293, 297, 304, 311, 326, 350, 379},
+        {"shaping",            152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"ring",               202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+        {"animating",          202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+      }, true
     },
   ["Gammer Shorga's Helpful Undergrowth"]            = {25, "gshu", "Offensive",     70, 
       {
-      }
+        {"animating",          102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"cursing",            152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+      }, true
     },
   ["Gammer Tumult's Amalgamator"]                    = {20, "gta",  "Miscellaneous", 45, 
       {
-      }
+        {"evoking",            152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"weaving",             52,  55,  61,  68,  72,  79,  86, 101, 125, 154},
+        {"binding",            192, 195, 201, 208, 212, 219, 226, 241, 265, 294},
+      }, true
     },
   ["Goodie Whemper's Apple Divination"]              = {20, "gwad", "Miscellaneous", 40, 
       {
-      }
+        {"channeling",         102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"divining",            77,  80,  86,  93,  97, 104, 111, 126, 150, 179},
+      }, true
     },
   ["Grammer Scorbic's Household Guard"]              = {20, "gshg", "Defensive",     50, 
       {
-      }
+        {"evoking",             62,  65,  71,  78,  82,  89,  96, 111, 135, 164},
+        {"channeling",         122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"binding",            177, 180, 186, 193, 197, 204, 211, 226, 250, 279},
+      }, true
     },
   ["Granny Beedle's Cooperative Credits"]            = {40, "gbcc", "Miscellaneous", 60, 
       {
-      }
+        {"talisman",            82,  85,  91,  98, 102, 109, 116, 131, 155, 184},
+        {"chanting",           112, 115, 121, 128, 132, 139, 146, 161, 185, 214},
+        {"scrying",            172, 175, 181, 188, 192, 199, 206, 221, 245, 274},
+        {"divining",           162, 165, 171, 178, 182, 189, 196, 211, 235, 264},
+      }, true
     },
   ["Granny Benedict's Bond of Loyalty"]              = {50, "gbbl", "Miscellaneous", 80, 
       {
-      }
+        {"talisman",            62,  65,  71,  78,  82,  89,  96, 111, 135, 164},
+        {"summoning",          102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"charming",           152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"binding",            127, 130, 136, 143, 147, 154, 161, 176, 200, 229},
+      }, true
     },
   ["Granny Lipintense's Layer of Lard"]              = {10, "glll", "Miscellaneous", 30, 
       {
-      }
+        {"dancing",            117, 120, 126, 133, 137, 144, 151, 166, 190, 219},
+        {"charming",           112, 115, 121, 128, 132, 139, 146, 161, 185, 214},
+        {"channeling",         147, 150, 156, 163, 167, 174, 181, 196, 220, 249},
+      }, true
     },
   ["Hag's Blessing"]                                 = {10, "hb",   "Miscellaneous", 25, 
       {
-      }
+        {"divining",            77,  80,  86,  93,  97, 104, 111, 126, 150, 179},
+        {"charming",           102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"summoning",          102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+      }, true
     },
   ["Mama Blackwing's Potent Preserver"]              = {20, "mbpp", "Miscellaneous", 75, 
       {
-      }
+        {"fire",               152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"chanting",           127, 130, 136, 143, 147, 154, 161, 176, 200, 229},
+        {"channeling",         202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+        {"water",              147, 150, 156, 163, 167, 174, 181, 196, 220, 249},
+      }, true
     },
   ["Mama Kolydina's Instant Infestation"]            = {45, "mkii", "Defensive",     70, 
       {
-      }
+        {"summoning",          122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"charming",            92,  95, 101, 108, 112, 119, 126, 141, 165, 194},
+        {"chanting",           112, 115, 121, 128, 132, 139, 146, 161, 185, 214},
+        {"binding",            102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"cursing",             87,  90,  96, 103, 107, 114, 121, 136, 160, 189},
+      }, true
     },
   ["Mother Brynda's Call of Gravity"]                = {20, "mbcg", "Offensive",     50, 
       {
-      }
+        {"evoking",             62,  65,  71,  78,  82,  89,  96, 111, 135, 164},
+        {"channeling",         122, 125, 131, 138, 142, 149, 156, 171, 195, 224},
+        {"binding",            177, 180, 186, 193, 197, 204, 211, 226, 250, 279},
+      }, true
     },
   ["Mother Feelbright's Busy Bees"]                  = {60, "mfbb", "Offensive",     75, 
       {
-      }
+        {"channeling",         142, 145, 151, 158, 162, 169, 176, 191, 215, 244},
+        {"summoning",          177, 180, 186, 193, 197, 204, 211, 226, 250, 279},
+        {"cursing",            107, 110, 116, 123, 127, 134, 141, 156, 180, 209},
+        {"charming",           197, 200, 206, 213, 217, 224, 231, 246, 270, 299},
+      }, true
     },
   ["Mother Harblist's Fruity Flyer"]                 = {60, "mhff", "Miscellaneous", 200, 
       {
-      }
+        {"summoning",          202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+        {"chanting",           252, 255, 261, 268, 272, 279, 286, 301, 325, 354},
+        {"charming",           202, 205, 211, 218, 222, 229, 236, 251, 275, 304},
+        {"dancing",            272, 275, 281, 288, 292, 299, 306, 321, 345, 374},
+      }, true
     },
   ["Mother Twinter's Yarrow Enchantment"]            = {5,  "mtye", "Miscellaneous", 60, 
       {
-      }
+        {"evoking",             27,  30,  36,  43,  47,  54,  61,  76, 100, 129},
+        {"enchanting",          52,  55,  61,  68,  72,  79,  86, 101, 125, 154},
+        {"chanting",            52,  55,  61,  68,  72,  79,  86, 101, 125, 154},
+        {"enchanting",         102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+      }, true
     },
   ["Nanny Revere's Traitorous Talisman"]             = {50, "nrtt", "Miscellaneous", 80, 
       {
-      }
+        {"talisman",           102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"divining",           152, 155, 161, 168, 172, 179, 186, 201, 225, 254},
+        {"chanting",           252, 255, 261, 268, 272, 279, 286, 301, 325, 354},
+        {"charming",           302, 305, 311, 318, 322, 329, 336, 351, 375, 404},
+      }, true
     },
   ["Wee Flaudia's Fluffy Ear Muffs"]                 = {10, "wffem","Defensive",     30, 
       {
-      }
+        {"chanting",           102, 105, 111, 118, 122, 129, 136, 151, 175, 204},
+        {"channeling",         112, 115, 121, 128, 132, 139, 146, 161, 185, 214},
+        {"air",                132, 135, 141, 148, 152, 159, 166, 181, 205, 234},
+      }, true
     },
 }
 
@@ -1390,6 +1501,9 @@ function QuowMindspaceSetter (sName, sLine, wildcards)
         Note("")
         Note(string.upper(sAcronym) .. ": " .. sSpellName .. ".  Mindspace = " .. tostring(iQuowMindspace[sSpellName][1]) .. ", GP Cost = " .. tostring(iQuowMindspace[sSpellName][4]))
         Note("It is categorised as " .. iQuowMindspace[sSpellName][3] .. ".")
+        if (iQuowMindspace[sSpellName][6] ~= nil or iQuowMindspace[sSpellName][6] == true) then
+          Note("This is a witch spell.")
+        end
         -- Get the spellcheck data and display it nicely?
         Note("")
         Note("(type 'mindspace skills' to update the plugin with your current bonuses for accurate spellchecks)")
@@ -1458,27 +1572,29 @@ function QuowMindspaceSetter (sName, sLine, wildcards)
           local iThisDistance = 0
           for sKey, iValue in pairs (iQuowMindspace) do
             -- Look for matching skills
-            for sSkillKey, iSkillValue in pairs (iValue[5]) do
-              if (sSkill == iSkillValue[1]) then
-                iThisDistance = iMyBonus - iSkillValue[6]
-                local sThisNote = ""
-                if (iThisDistance <= 0) then
-                  if (iBonusDistanceDown == nil or iThisDistance > iBonusDistanceDown) then
-                    iBonusDistanceDown = iThisDistance
-                    sSpellDown = iValue[2]
-                    sSpellDownName = sKey
+            if (iValue[6] == nil or iValue[6] == false) then  -- Ignore witch spells
+              for sSkillKey, iSkillValue in pairs (iValue[5]) do
+                if (sSkill == iSkillValue[1]) then
+                  iThisDistance = iMyBonus - iSkillValue[6]
+                  local sThisNote = ""
+                  if (iThisDistance <= 0) then
+                    if (iBonusDistanceDown == nil or iThisDistance > iBonusDistanceDown) then
+                      iBonusDistanceDown = iThisDistance
+                      sSpellDown = iValue[2]
+                      sSpellDownName = sKey
+                    end
+                    sThisNote = "ABOVE your bonus"
+                    iThisDistance = -1 * iThisDistance
+                  elseif (iThisDistance > 0) then
+                    if (iBonusDistanceUp == nil or iThisDistance < iBonusDistanceUp) then
+                      iBonusDistanceUp = iThisDistance
+                      sSpellUp = iValue[2]
+                      sSpellUpName = sKey
+                    end
+                    sThisNote = "BELOW your bonus"
                   end
-                  sThisNote = "ABOVE your bonus"
-                  iThisDistance = -1 * iThisDistance
-                elseif (iThisDistance > 0) then
-                  if (iBonusDistanceUp == nil or iThisDistance < iBonusDistanceUp) then
-                    iBonusDistanceUp = iThisDistance
-                    sSpellUp = iValue[2]
-                    sSpellUpName = sKey
-                  end
-                  sThisNote = "BELOW your bonus"
+                  Note(sKey .. " ('mindspace " .. iValue[2] .. "') has a check " .. tostring(iThisDistance) .. " " .. sThisNote)
                 end
-                Note(sKey .. " ('mindspace " .. iValue[2] .. "') has a check " .. tostring(iThisDistance) .. " " .. sThisNote)
               end
             end
           end
